@@ -8,6 +8,7 @@ import java.awt.event.*;
  make each seperate task a class, make a jlist of these classes, and when the buttons are pressed, we add them accordingly
  my only concern is the actionListener, do we put it in the individual classes or still in the main class?
  either way I feel like this is a start
+ 
  */
 class toDoBoxes{
     toDoBoxes(String t){
