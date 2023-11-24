@@ -11,6 +11,8 @@ public class TaskList {
   public TaskList(String inputTitle) {
     this.title = inputTitle;
     this.tasklist = new ArrayList<>();
+    this.prev_dest = null;
+    this.next_dest = null;
   }
 
   public TaskList(String inputTitle, TaskList inputPrevDest, TaskList inputNextDest) {
@@ -19,11 +21,57 @@ public class TaskList {
     this.prev_dest = inputPrevDest;
     this.next_dest = inputNextDest;
   }
-  // TODO: Add task to tasklist method
 
-  // TODO: Print tasks method
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public void addTask(String inputTitle) {
+    tasklist.add(new Task(inputTitle, this.title));
+  }
 
-  // TODO: Remove task from tasklist method
+  public void printTaskList() {
+    System.out.println(this.title);
+    System.out.println("-----------");
+    for (Task task : tasklist) {
+      System.out.println(task.getTitle() + " " + task.getLocation());
+    }
+  }
 
-  // TODO: get set methods
+  // TODO: Remove task from tasklist
+  // TODO: (Optional) Update task form tasklist
+  // TODO: Move task between tasklist
+  // TODO: Add GUI component logics
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  public String getTitle() {
+    return this.title;
+  }
+
+  public void setTitle(String inputTitle) {
+    this.title = inputTitle;
+  }
+
+  public ArrayList<Task> getTaskList() {
+    return this.tasklist;
+  }
+
+  public void setTaskList(ArrayList<Task> inputTasklist) {
+    this.tasklist = inputTasklist;
+  }
+
+  public String getPrevDest() {
+    return this.prev_dest.getTitle();
+  }
+
+  public void setPrevDest(TaskList inputTask) {
+    this.prev_dest = inputTask;
+  }
+
+  public String getNextDest() {
+    return this.next_dest.getTitle();
+  }
+
+  public void setNextDest(TaskList inputTask) {
+    this.next_dest = inputTask;
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 }

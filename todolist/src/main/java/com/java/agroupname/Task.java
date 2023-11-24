@@ -8,29 +8,32 @@ public class Task {
   private String location; // Refers to where is this Task located (Which list of tasks)
 
   public Task(String inputTitle, String inputLocation) {
-    id = UUID.randomUUID();
+    this.id = UUID.randomUUID();
 
-    title = inputTitle;
-    location = inputLocation;
+    this.title = inputTitle;
+    this.location = inputLocation;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public String getTitle() {
-    return title;
+    return this.title;
   }
 
   public void setTitle(String inputTitle) {
-    title = inputTitle;
+    this.title = inputTitle;
   }
 
   public String getLocation() {
-    return location;
+    return this.location;
   }
 
   public void setLocation(String inputLocation) {
-    location = inputLocation;
+    this.location = inputLocation;
   }
 
   public UUID getId() {
-    return id;
+    return this.id;
   }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 }
