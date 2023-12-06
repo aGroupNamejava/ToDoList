@@ -2,21 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragGestureEvent;
-import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DragGestureRecognizer;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DragSourceDragEvent;
-import java.awt.dnd.DragSourceDropEvent;
-import java.awt.dnd.DragSourceEvent;
-import java.awt.dnd.DragSourceListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -46,8 +36,14 @@ public class todolisto {
         JLabel title = new JLabel("Title");
         textField = new JTextField(15);
         JButton enterTask = new JButton("Add Task");
+        enterTask.setFocusPainted(false);
+        enterTask.setContentAreaFilled(false);
         JButton deleteTask = new JButton("Delete Task");
+        deleteTask.setFocusPainted(false);
+        deleteTask.setContentAreaFilled(false);
         JButton clearTask = new JButton("Clear Tasks");
+        clearTask.setFocusPainted(false);
+        clearTask.setContentAreaFilled(false);
 
         // Add input components to the frame
         frame.add(title);
@@ -143,6 +139,51 @@ public class todolisto {
             }
         });
 
+        toDoList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JList list = (JList) e.getSource();
+
+                if (e.getClickCount() == 2) {
+                    int index = list.locationToIndex(e.getPoint());
+
+                    String newTask = JOptionPane.showInputDialog("Edit task name:");
+                    if (!newTask.equals("")) {
+                        toDoListModel.setElementAt(newTask, index);
+                    }
+                }
+            }
+        });
+
+        inProgressList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JList list = (JList) e.getSource();
+
+                if (e.getClickCount() == 2) {
+                    int index = list.locationToIndex(e.getPoint());
+
+                    String newTask = JOptionPane.showInputDialog("Edit task name:");
+                    if (!newTask.equals("")) {
+                        inProgressListModel.setElementAt(newTask, index);
+                    }
+                }
+            }
+        });
+
+        completedList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JList list = (JList) e.getSource();
+
+                if (e.getClickCount() == 2) {
+                    int index = list.locationToIndex(e.getPoint());
+
+                    String newTask = JOptionPane.showInputDialog("Edit task name:");
+                    if (!newTask.equals("")) {
+                        completedListModel.setElementAt(newTask, index);
+                    }
+                }
+            }
+        });
+
         toDoList.setDragEnabled(true);
         inProgressList.setDragEnabled(true);
         completedList.setDragEnabled(true);
@@ -172,9 +213,9 @@ public class todolisto {
 
 class ListTransferHandler extends TransferHandler {
     private int[] indices = null;
-    private int addIndex = -1; //Location where items were added
-    private int addCount = 0;  //Number of items added.
-            
+    private int addIndex = -1; // Location where items were added
+    private int addCount = 0; // Number of items added.
+
     /**
      * We only support importing strings.
      */
@@ -184,17 +225,17 @@ class ListTransferHandler extends TransferHandler {
             return false;
         }
         return true;
-   }
+    }
 
     /**
      * Bundle up the selected items in a single list for export.
      * Each line is separated by a newline.
      */
     protected Transferable createTransferable(JComponent c) {
-        JList list = (JList)c;
+        JList list = (JList) c;
         indices = list.getSelectedIndices();
         Object[] values = list.getSelectedValues();
-        
+
         StringBuffer buff = new StringBuffer();
 
         for (int i = 0; i < values.length; i++) {
@@ -204,28 +245,28 @@ class ListTransferHandler extends TransferHandler {
                 buff.append("\n");
             }
         }
-        
+
         return new StringSelection(buff.toString());
     }
-    
+
     /**
      * We support both copy and move actions.
      */
     public int getSourceActions(JComponent c) {
         return TransferHandler.COPY_OR_MOVE;
     }
-    
+
     /**
-     * Perform the actual import.  This demo only supports drag and drop.
+     * Perform the actual import. This demo only supports drag and drop.
      */
     public boolean importData(TransferHandler.TransferSupport info) {
         if (!info.isDrop()) {
             return false;
         }
 
-        JList list = (JList)info.getComponent();
-        DefaultListModel listModel = (DefaultListModel)list.getModel();
-        JList.DropLocation dl = (JList.DropLocation)info.getDropLocation();
+        JList list = (JList) info.getComponent();
+        DefaultListModel listModel = (DefaultListModel) list.getModel();
+        JList.DropLocation dl = (JList.DropLocation) info.getDropLocation();
         int index = dl.getIndex();
         boolean insert = dl.isInsert();
 
@@ -233,18 +274,19 @@ class ListTransferHandler extends TransferHandler {
         Transferable t = info.getTransferable();
         String data;
         try {
-            data = (String)t.getTransferData(DataFlavor.stringFlavor);
-        } 
-        catch (Exception e) { return false; }
-                                
+            data = (String) t.getTransferData(DataFlavor.stringFlavor);
+        } catch (Exception e) {
+            return false;
+        }
+
         // Wherever there is a newline in the incoming data,
         // break it into a separate item in the list.
         String[] values = data.split("\n");
-        
+
         addIndex = index;
         addCount = values.length;
-        
-        // Perform the actual import.  
+
+        // Perform the actual import.
         for (int i = 0; i < values.length; i++) {
             if (insert) {
                 listModel.add(index++, values[i]);
@@ -265,15 +307,15 @@ class ListTransferHandler extends TransferHandler {
      * Remove the items moved from the list.
      */
     protected void exportDone(JComponent c, Transferable data, int action) {
-        JList source = (JList)c;
-        DefaultListModel listModel  = (DefaultListModel)source.getModel();
+        JList source = (JList) c;
+        DefaultListModel listModel = (DefaultListModel) source.getModel();
 
         if (action == TransferHandler.MOVE) {
             for (int i = indices.length - 1; i >= 0; i--) {
                 listModel.remove(indices[i]);
             }
         }
-        
+
         indices = null;
         addCount = 0;
         addIndex = -1;
