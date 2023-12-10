@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 
-class todolisto {
+public class todolisto {
     private JFrame frame;
     private JTextField textField;
     private DefaultListModel<String> toDoListModel;
