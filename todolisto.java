@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.TransferHandler;
+import javax.swing.border.Border;
 
 public class todolisto {
     private JFrame frame;
@@ -30,6 +31,7 @@ public class todolisto {
         frame = new JFrame("To-Do List by --- Evan, Kaila, Young, Andrew");
         frame.setSize(700, 550);
         frame.getContentPane().setLayout(new FlowLayout());
+        frame.getContentPane().setBackground(new Color(255, 248, 222));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Components for input
@@ -45,6 +47,25 @@ public class todolisto {
         clearTask.setFocusPainted(false);
         clearTask.setContentAreaFilled(false);
 
+        // colors!!
+        Border border1 = BorderFactory.createLineBorder(new Color(153, 169, 143), 2);
+        Border border2 = BorderFactory.createLineBorder(new Color(193, 208, 181), 2);
+        Border border3 = BorderFactory.createLineBorder(new Color(214, 232, 219), 2);
+        Color buttonColor = new Color(193, 208, 181);
+        enterTask.setBackground(buttonColor);
+        enterTask.setOpaque(true);
+        enterTask.setBorder(border1);
+        enterTask.setBorderPainted(true);
+        deleteTask.setBackground(buttonColor);
+        deleteTask.setOpaque(true);
+        deleteTask.setBorder(border1);
+        deleteTask.setBorderPainted(true);
+        clearTask.setBackground(buttonColor);
+        clearTask.setOpaque(true);
+        clearTask.setBorder(border1);
+        clearTask.setBorderPainted(true);
+        textField.setBorder(border2);
+
         // Add input components to the frame
         frame.add(title);
         frame.add(textField);
@@ -54,6 +75,7 @@ public class todolisto {
 
         // Panel with three columns for task lists
         JPanel threeColumns = new JPanel(new GridBagLayout());
+        threeColumns.setBackground(new Color(254, 250, 224));
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(5, 5, 5, 5);
@@ -88,6 +110,7 @@ public class todolisto {
         c.gridx = 0;
         c.gridy = 1;
         threeColumns.add(toDoScrollPane, c);
+        toDoScrollPane.setBorder(border3);
 
         inProgressListModel = new DefaultListModel<>();
         inProgressList = new JList<>(inProgressListModel);
@@ -96,6 +119,7 @@ public class todolisto {
         c.gridx = 1;
         c.gridy = 1;
         threeColumns.add(inProgressScrollPane, c);
+        inProgressScrollPane.setBorder(border3);
 
         completedListModel = new DefaultListModel<>();
         completedList = new JList<>(completedListModel);
@@ -104,6 +128,7 @@ public class todolisto {
         c.gridx = 2;
         c.gridy = 1;
         threeColumns.add(completedScrollPane, c);
+        completedScrollPane.setBorder(border3);
 
         // Action listeners for buttons
         enterTask.addActionListener(new ActionListener() {
@@ -111,6 +136,15 @@ public class todolisto {
                 String taskTitle = textField.getText();
                 toDoListModel.addElement(taskTitle); // Add to to-do list by default
                 textField.setText("");
+            }
+        });
+        enterTask.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent me) {
+                enterTask.setBackground(new Color(153, 169, 143));
+            }
+
+            public void mouseExited(MouseEvent me) {
+                enterTask.setBackground(buttonColor);
             }
         });
 
@@ -131,11 +165,31 @@ public class todolisto {
             }
         });
 
+        deleteTask.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent me) {
+                deleteTask.setBackground(new Color(153, 169, 143));
+            }
+
+            public void mouseExited(MouseEvent me) {
+                deleteTask.setBackground(buttonColor);
+            }
+        });
+
         clearTask.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 toDoListModel.clear();
                 inProgressListModel.clear();
                 completedListModel.clear();
+            }
+        });
+
+        clearTask.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent me) {
+                clearTask.setBackground(new Color(153, 169, 143));
+            }
+
+            public void mouseExited(MouseEvent me) {
+                clearTask.setBackground(buttonColor);
             }
         });
 
